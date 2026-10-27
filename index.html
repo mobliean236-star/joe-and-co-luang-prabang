@@ -10,6 +10,41 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Mobile-first ordering flow */
+    .order-add{display:inline-flex;align-items:center;justify-content:center;gap:5px;margin:8px 0 0;padding:9px 12px;border:1px solid var(--gold);border-radius:5px;background:var(--gold);color:#17120f;font:700 11px "DM Sans",sans-serif;letter-spacing:.04em;cursor:pointer;min-height:36px}
+    .order-add:hover{filter:brightness(1.08)}
+    .coffee-menu-row .order-add{display:block;margin-left:auto}
+    .food-menu-row .order-add,.signature-item .order-add{flex-shrink:0}
+    .food-menu-row{flex-wrap:wrap}
+    .food-menu-row .order-add{margin-left:auto}
+    .signature-item{grid-template-columns:28px minmax(0,1fr) auto}
+    .signature-item .order-add{grid-column:2 / -1;justify-self:end;margin-top:0}
+    .order-cart-fab{position:fixed;z-index:1000;right:20px;bottom:20px;display:flex;align-items:center;gap:12px;padding:15px 19px;border:1px solid var(--gold);border-radius:999px;background:var(--gold);color:#17120f;font:700 13px "DM Sans",sans-serif;box-shadow:0 12px 35px rgba(0,0,0,.35);cursor:pointer}
+    .order-cart-count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 5px;border-radius:999px;background:#17120f;color:var(--gold);font-size:11px}
+    .order-modal[hidden]{display:none}
+    .order-modal{position:fixed;inset:0;z-index:1100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.72);padding:0}
+    .order-sheet{width:min(720px,100%);max-height:92dvh;overflow:auto;background:#211914;color:var(--cream);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:24px max(20px,env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));box-shadow:0 -15px 60px rgba(0,0,0,.35)}
+    .order-sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:20px}
+    .order-sheet h2{font:500 32px/1.1 "Playfair Display",serif;margin:5px 0 0}
+    .order-close{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--cream);font-size:23px;cursor:pointer}
+    .order-empty{padding:24px 0;color:var(--muted);line-height:1.7}
+    .order-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+    .order-line strong{font-size:15px}
+    .order-line small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .order-line-actions{display:flex;align-items:center;gap:7px;justify-content:flex-end}
+    .order-line-actions button{width:32px;height:32px;border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--cream);font-size:18px;cursor:pointer}
+    .order-total{display:flex;justify-content:space-between;gap:12px;padding:18px 0;font-size:16px;font-weight:700}
+    .order-form{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:8px}
+    .order-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .order-field.full{grid-column:1/-1}
+    .order-field label{font-size:12px;color:var(--muted);font-weight:600}
+    .order-field input,.order-field select,.order-field textarea{width:100%;min-height:46px;padding:11px 12px;border:1px solid #72553d;border-radius:5px;background:#17120f;color:var(--cream);font:15px "DM Sans",sans-serif}
+    .order-field textarea{min-height:76px;resize:vertical}
+    .order-submit{width:100%;min-height:54px;margin-top:18px;border:0;border-radius:6px;background:var(--gold);color:#17120f;font:700 13px "DM Sans",sans-serif;letter-spacing:.04em;cursor:pointer}
+    .order-help{font-size:12px;color:var(--muted);line-height:1.65;margin:12px 0 0}
+    .order-hidden{display:none!important}
+    @media(min-width:700px){.order-modal{align-items:center;padding:24px}.order-sheet{border-radius:18px;max-height:88vh}}
+    @media(max-width:600px){.order-cart-fab{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));padding:13px 16px;font-size:12px}.order-sheet{padding-top:20px}.order-sheet h2{font-size:29px}.order-form{grid-template-columns:1fr}.order-field.full{grid-column:auto}.coffee-menu-row .order-add{padding:8px 9px;font-size:10px}.food-menu-row .order-add{margin-left:0}.signature-item .order-add{grid-column:2/-1}}
 
     .social-links{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 22px}
     .social-link{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:56px;padding:15px 20px;border:1px solid var(--gold);border-radius:8px;background:var(--gold);color:#17120f!important;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
@@ -388,7 +423,164 @@
   <section class="final-note"><div class="eyebrow" style="justify-content:center"><i class="dot"></i> Save you a seat?</div><h2>See you over coffee.</h2><p>Joe & Co. · Luang Prabang · Laos</p></section>
   </main>
   <footer><div><strong class="footer-brand"><img src="assets/joe-co-wordmark.svg" alt="Joe &amp; Co Coffee logo"/></strong> &nbsp; Coffee · Matcha · Canelé · Sandwiches</div><div>Open daily 9 AM–6 PM</div><div>© <span id="year"></span> Joe & Co. Luang Prabang</div></footer>
+  <button class="order-cart-fab" id="order-cart" type="button" aria-haspopup="dialog" aria-controls="order-modal">
+    <span aria-hidden="true">＋</span> Your order <span class="order-cart-count" id="order-cart-count">0</span>
+  </button>
+  <div class="order-modal" id="order-modal" hidden>
+    <section class="order-sheet" role="dialog" aria-modal="true" aria-labelledby="order-title">
+      <div class="order-sheet-head">
+        <div><div class="eyebrow"><i class="dot"></i> Joe &amp; Co. Coffee</div><h2 id="order-title">Your order.</h2></div>
+        <button class="order-close" id="order-close" type="button" aria-label="Close order">×</button>
+      </div>
+      <div id="order-lines" aria-live="polite"><p class="order-empty">Your cart is empty. Add a drink or something sweet from the menu.</p></div>
+      <div class="order-total"><span>Total</span><span id="order-total">0 kip</span></div>
+      <form id="order-form">
+        <div class="order-form">
+          <div class="order-field"><label for="order-name">Name *</label><input id="order-name" name="name" autocomplete="name" required placeholder="Your name"></div>
+          <div class="order-field"><label for="order-phone">Phone / WhatsApp *</label><input id="order-phone" name="phone" type="tel" autocomplete="tel" required placeholder="+856 ..."></div>
+          <div class="order-field"><label for="order-type">Order type *</label><select id="order-type" name="type"><option value="Pickup">Takeaway / pickup</option><option value="Dine-in">Dine-in</option></select></div>
+          <div class="order-field order-hidden" id="order-table-wrap"><label for="order-table">Table number (if known)</label><input id="order-table" name="table" placeholder="Table number"></div>
+          <div class="order-field"><label for="order-payment">Payment *</label><select id="order-payment" name="payment"><option value="Cash at café">Cash at café</option><option value="BCEL QR at café">BCEL QR at café</option></select></div>
+          <div class="order-field"><label for="order-mode">Order entered by</label><select id="order-mode" name="mode"><option value="Customer">Customer</option><option value="Staff">Staff member</option></select></div>
+          <div class="order-field full"><label for="order-notes">Notes / customizations</label><textarea id="order-notes" name="notes" placeholder="Sugar level, milk preference, allergies or other requests"></textarea></div>
+        </div>
+        <button class="order-submit" type="submit">SEND ORDER VIA WHATSAPP ↗</button>
+      </form>
+      <p class="order-help">WhatsApp will open with your order ready to send to Joe &amp; Co. Please check the message and tap Send. Cash and BCEL QR are selected for payment at the café; online payment is not processed on this website.</p>
+    </section>
+  </div>
   <script>
+    // Ordering cart: all product names and prices are read from the visible menu.
+    const orderCart = [];
+    const cartButton = document.getElementById('order-cart');
+    const cartCount = document.getElementById('order-cart-count');
+    const orderModal = document.getElementById('order-modal');
+    const orderLines = document.getElementById('order-lines');
+    const orderTotal = document.getElementById('order-total');
+    const orderType = document.getElementById('order-type');
+    const orderTableWrap = document.getElementById('order-table-wrap');
+    const formatKip = amount => new Intl.NumberFormat('en-US').format(amount) + ' kip';
+    const parseKip = node => {
+      const match = node && node.textContent.match(/[0-9][0-9,]*/);
+      return match ? Number(match[0].replace(/,/g, '')) : 0;
+    };
+    function addOrderButton(container, name, variant, price) {
+      if (!name || !price) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'order-add';
+      button.textContent = '＋ Add';
+      button.setAttribute('aria-label', 'Add ' + name + (variant ? ' ' + variant : '') + ' to order, ' + formatKip(price));
+      button.addEventListener('click', () => {
+        const key = name + '|' + (variant || '');
+        const existing = orderCart.find(item => item.key === key);
+        if (existing) existing.quantity += 1;
+        else orderCart.push({key, name, variant: variant || '', price, quantity: 1});
+        renderOrderCart();
+        cartButton.animate?.([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],{duration:220});
+      });
+      container.appendChild(button);
+    }
+    document.querySelectorAll('.coffee-menu-row').forEach(row => {
+      const nameNode = row.querySelector('.coffee-name strong');
+      if (!nameNode) return;
+      const name = nameNode.textContent.trim();
+      const hot = row.querySelector('.hot-price');
+      const iced = row.querySelector('.iced-price');
+      if (hot) addOrderButton(hot, name, 'Hot', parseKip(hot));
+      if (iced) addOrderButton(iced, name, 'Iced', parseKip(iced));
+    });
+    document.querySelectorAll('.food-menu-row').forEach(row => {
+      const nameNode = row.querySelector('strong');
+      const priceNode = row.querySelector('b');
+      if (nameNode && priceNode) addOrderButton(priceNode, nameNode.textContent.trim(), '', parseKip(priceNode));
+    });
+    document.querySelectorAll('.signature-item').forEach(row => {
+      const nameNode = row.querySelector('h3');
+      const priceNode = row.querySelector('strong');
+      if (nameNode && priceNode) addOrderButton(priceNode, nameNode.textContent.trim(), 'Iced', parseKip(priceNode));
+    });
+    function renderOrderCart() {
+      const count = orderCart.reduce((sum, item) => sum + item.quantity, 0);
+      const total = orderCart.reduce((sum, item) => sum + item.quantity * item.price, 0);
+      cartCount.textContent = count;
+      orderTotal.textContent = formatKip(total);
+      if (!orderCart.length) {
+        orderLines.innerHTML = '<p class="order-empty">Your cart is empty. Add a drink or something sweet from the menu.</p>';
+        return;
+      }
+      orderLines.replaceChildren();
+      orderCart.forEach(item => {
+        const line = document.createElement('div');
+        line.className = 'order-line';
+        const detail = document.createElement('div');
+        const title = document.createElement('strong');
+        title.textContent = item.name;
+        detail.appendChild(title);
+        const sub = document.createElement('small');
+        sub.textContent = [item.variant, formatKip(item.price) + ' each'].filter(Boolean).join(' · ');
+        detail.appendChild(sub);
+        const actions = document.createElement('div');
+        actions.className = 'order-line-actions';
+        const minus = document.createElement('button');
+        minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label','Remove one ' + item.name);
+        minus.addEventListener('click', () => {
+          item.quantity -= 1;
+          if (item.quantity <= 0) orderCart.splice(orderCart.indexOf(item),1);
+          renderOrderCart();
+        });
+        const quantity = document.createElement('span');
+        quantity.textContent = item.quantity;
+        const plus = document.createElement('button');
+        plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label','Add one ' + item.name);
+        plus.addEventListener('click', () => { item.quantity += 1; renderOrderCart(); });
+        actions.append(minus,quantity,plus);
+        line.append(detail,actions);
+        orderLines.appendChild(line);
+      });
+    }
+    function openOrder() {
+      orderModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('order-name').focus();
+    }
+    function closeOrder() {
+      orderModal.hidden = true;
+      document.body.style.overflow = '';
+      cartButton.focus();
+    }
+    cartButton.addEventListener('click', openOrder);
+    document.getElementById('order-close').addEventListener('click', closeOrder);
+    orderModal.addEventListener('click', event => { if (event.target === orderModal) closeOrder(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !orderModal.hidden) closeOrder(); });
+    orderType.addEventListener('change', () => orderTableWrap.classList.toggle('order-hidden', orderType.value !== 'Dine-in'));
+    document.getElementById('order-form').addEventListener('submit', event => {
+      event.preventDefault();
+      if (!orderCart.length) { alert('Please add at least one item to your order.'); return; }
+      const form = new FormData(event.currentTarget);
+      const total = orderCart.reduce((sum, item) => sum + item.quantity * item.price, 0);
+      const lines = orderCart.map(item => '- ' + item.quantity + ' × ' + item.name + (item.variant ? ' (' + item.variant + ')' : '') + ' — ' + formatKip(item.quantity * item.price));
+      const message = [
+        'Hello Joe & Co. Coffee! I would like to place an order.',
+        '',
+        'Name: ' + form.get('name'),
+        'Phone: ' + form.get('phone'),
+        'Order type: ' + form.get('type'),
+        form.get('type') === 'Dine-in' && form.get('table') ? 'Table: ' + form.get('table') : '',
+        'Payment: ' + form.get('payment'),
+        'Entered by: ' + form.get('mode'),
+        '',
+        'ORDER:',
+        ...lines,
+        '',
+        'TOTAL: ' + formatKip(total),
+        form.get('notes') ? 'Notes: ' + form.get('notes') : '',
+        '',
+        'Please confirm availability and preparation time. Thank you!'
+      ].filter(Boolean).join('\n');
+      window.open('https://wa.me/8562096016348?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+    });
+    renderOrderCart();
     document.getElementById('year').textContent = new Date().getFullYear();
     const filters = document.querySelectorAll('.filter-btn');
     const cards = document.querySelectorAll('.card[data-category]');
