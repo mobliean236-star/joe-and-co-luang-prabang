@@ -441,7 +441,8 @@
           <div class="order-field"><label for="order-type">Order type *</label><select id="order-type" name="type"><option value="Pickup">Takeaway / pickup</option><option value="Dine-in">Dine-in</option></select></div>
           <div class="order-field order-hidden" id="order-table-wrap"><label for="order-table">Table number (if known)</label><input id="order-table" name="table" placeholder="Table number"></div>
           <div class="order-field"><label for="order-payment">Payment *</label><select id="order-payment" name="payment"><option value="Cash at café">Cash at café</option><option value="BCEL QR at café">BCEL QR at café</option></select></div>
-          <div class="order-field full"><label for="order-notes">Notes / customizations</label><textarea id="order-notes" name="notes" placeholder="Sugar level, milk preference, allergies or other requests"></textarea></div>
+          <div class="order-field"><label for="order-sugar">Sugar level</label><select id="order-sugar" name="sugar"><option value="Normal sugar (100%)">Normal sugar · 100%</option><option value="75% sugar">75% sugar</option><option value="50% sugar">Half sugar · 50%</option><option value="25% sugar">Light sugar · 25%</option><option value="No sugar (0%)">No sugar · 0%</option><option value="No preference">No preference / not applicable</option></select></div>
+          <div class="order-field full"><label for="order-notes">Notes / customizations</label><textarea id="order-notes" name="notes" placeholder="Milk preference, allergies or other requests"></textarea></div>
         </div>
         <button class="order-submit" type="submit">SEND ORDER VIA WHATSAPP ↗</button>
       </form>
@@ -574,6 +575,7 @@
         'Order type: ' + form.get('type'),
         form.get('type') === 'Dine-in' && form.get('table') ? 'Table: ' + form.get('table') : '',
         'Payment: ' + form.get('payment'),
+        'Sugar level: ' + form.get('sugar'),
         '',
         'ORDER:',
         ...lines,
