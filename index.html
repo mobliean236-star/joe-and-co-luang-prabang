@@ -313,7 +313,28 @@
     filters.forEach(button => button.addEventListener('click', () => {
       const category = button.dataset.filter;
       filters.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      cards.forEach(card => { card.hidden = category !== 'all' && card.dataset.category !== category; });
+      cards.forEach(card => {
+        card.hidden = category !== 'all' && card.dataset.category !== category;
+      });
+      const menu = document.getElementById('menu');
+      const heading = menu.querySelector('.section-head');
+      if (heading) {
+        const messages = {
+          all: 'Showing all favourites.',
+          coffee: 'Showing coffee and matcha favourites.',
+          sweet: 'Showing sweet treats and pastries.',
+          bites: 'Showing brunch, sandwiches and bites.'
+        };
+        let status = document.getElementById('filter-status');
+        if (!status) {
+          status = document.createElement('p');
+          status.id = 'filter-status';
+          status.className = 'search-status';
+          heading.insertAdjacentElement('afterend', status);
+        }
+        status.textContent = messages[category] || messages.all;
+      }
+      menu.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }));
     const menuSearch = document.getElementById('menu-search');
     const searchStatus = document.getElementById('search-status');
