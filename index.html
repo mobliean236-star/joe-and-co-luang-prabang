@@ -480,6 +480,7 @@
         cartButton.animate?.([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],{duration:220});
       });
       container.appendChild(button);
+      return button;
     }
     document.querySelectorAll('.coffee-menu-row').forEach(row => {
       const nameNode = row.querySelector('.coffee-name strong');
@@ -493,12 +494,18 @@
     document.querySelectorAll('.food-menu-row').forEach(row => {
       const nameNode = row.querySelector('strong');
       const priceNode = row.querySelector('b');
-      if (nameNode && priceNode) addOrderButton(priceNode, nameNode.textContent.trim(), '', parseKip(priceNode));
+      if (nameNode && priceNode) {
+        const button = addOrderButton(priceNode, nameNode.textContent.trim(), '', parseKip(priceNode));
+        if (button) priceNode.insertAdjacentElement('afterend', button);
+      }
     });
     document.querySelectorAll('.signature-item').forEach(row => {
       const nameNode = row.querySelector('h3');
       const priceNode = row.querySelector('strong');
-      if (nameNode && priceNode) addOrderButton(priceNode, nameNode.textContent.trim(), 'Iced', parseKip(priceNode));
+      if (nameNode && priceNode) {
+        const button = addOrderButton(priceNode, nameNode.textContent.trim(), 'Iced', parseKip(priceNode));
+        if (button) priceNode.insertAdjacentElement('afterend', button);
+      }
     });
     function renderOrderCart() {
       const count = orderCart.reduce((sum, item) => sum + item.quantity, 0);
