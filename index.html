@@ -17,7 +17,7 @@
     a{color:inherit;text-decoration:none}
     .ticker{background:#0c0908;color:var(--cream);padding:11px 18px;text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid #33251d}
     header{max-width:1280px;margin:auto;padding:24px 6vw;display:flex;justify-content:space-between;align-items:center;gap:20px}
-    .brand{display:inline-flex;flex-direction:column;align-items:flex-start;font-family:"DM Sans",sans-serif;font-size:25px;font-weight:800;letter-spacing:-.055em;line-height:.95;color:#fff;text-transform:uppercase}.brand span{font-family:"DM Sans",sans-serif;font-weight:800;color:#fff}.brand small{font-family:cursive;font-size:15px;font-weight:400;letter-spacing:.01em;line-height:1.2;text-transform:none;margin-left:34%;color:#fff}
+    .brand{display:inline-flex;align-items:center;gap:10px;color:#fff}.brand img{display:block;width:138px;height:auto;max-height:64px;object-fit:contain}.brand .face-mark{width:38px;height:38px;object-fit:contain}.footer-brand{display:inline-flex;align-items:center;gap:10px}.footer-brand img{width:125px;height:auto;max-height:50px;object-fit:contain}
     nav{display:flex;gap:27px;align-items:center;font-size:12px;color:#eadbca}
     nav a{transition:opacity .2s}nav a:hover{opacity:.65}
     .nav-cta{border:1px solid #9a7556;padding:11px 16px}
@@ -82,7 +82,7 @@
 <body>
   <div class="ticker">Luang Prabang, Laos &nbsp; · &nbsp; Open daily 9 AM — 6 PM</div>
   <header>
-    <a class="brand" href="#top" aria-label="Joe and Co home">JOE &amp; CO<small>coffee</small></a>
+    <a class="brand" href="#top" aria-label="Joe and Co home"><img src="assets/joe-co-wordmark.svg" alt="Joe &amp; Co Coffee logo"/></a>
     <nav aria-label="Main navigation">
       <a href="#menu">The menu</a><a href="#story">Our vibe</a><a href="#visit">Find us</a>
       <a class="nav-cta" href="#visit">Come say hi ↗</a>
@@ -165,7 +165,7 @@
     </section>
     <section class="final-note"><div class="eyebrow" style="justify-content:center"><i class="dot"></i> Save you a seat?</div><h2>See you over coffee.</h2><p>Joe & Co. · Luang Prabang · Laos</p></section>
   </main>
-  <footer><div><strong class="brand">JOE &amp; CO<small>coffee</small></strong> &nbsp; Coffee · Matcha · Canelé · Sandwiches</div><div>Open daily 9 AM–6 PM</div><div>© <span id="year"></span> Joe & Co. Luang Prabang</div></footer>
+  <footer><div><strong class="footer-brand"><img src="assets/joe-co-wordmark.svg" alt="Joe &amp; Co Coffee logo"/></strong> &nbsp; Coffee · Matcha · Canelé · Sandwiches</div><div>Open daily 9 AM–6 PM</div><div>© <span id="year"></span> Joe & Co. Luang Prabang</div></footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
