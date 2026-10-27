@@ -341,25 +341,63 @@
     const searchableRows = [...document.querySelectorAll('.coffee-menu-row, .food-menu-row, .signature-item')];
     const searchableSections = [...document.querySelectorAll('.searchable-menu')];
     const menuCards = [...document.querySelectorAll('.card[data-category]')];
-    menuSearch.addEventListener('input', () => {
+    const menuSection = document.getElementById('menu');
+    const menuBrowser = document.getElementById('menu-browser');
+
+    function runMenuSearch(shouldScroll = false) {
       const query = menuSearch.value.trim().toLocaleLowerCase();
       let matches = 0;
+      let firstMatch = null;
+
       searchableRows.forEach(row => {
         const matched = !query || row.textContent.toLocaleLowerCase().includes(query);
         row.classList.toggle('search-hidden', !matched);
-        if (matched) matches++;
+        if (query && matched) {
+          matches++;
+          if (!firstMatch) firstMatch = row.closest('.searchable-menu') || row;
+        }
       });
+
       searchableSections.forEach(section => {
         const rows = [...section.querySelectorAll('.coffee-menu-row, .food-menu-row, .signature-item')];
         const hasMatch = !query || rows.some(row => !row.classList.contains('search-hidden'));
         section.classList.toggle('search-hidden', !hasMatch);
       });
-      menuCards.forEach(card => card.classList.toggle('search-hidden', !!query && !card.textContent.toLocaleLowerCase().includes(query)));
-      const menuSection = document.getElementById('menu');
+
+      menuCards.forEach(card => {
+        const matched = !query || card.textContent.toLocaleLowerCase().includes(query);
+        card.classList.toggle('search-hidden', !matched);
+        if (query && matched) {
+          matches++;
+          if (!firstMatch) firstMatch = card;
+        }
+      });
+
       menuSection.classList.toggle('search-hidden', !!query && !menuCards.some(card => !card.classList.contains('search-hidden')));
-      searchStatus.textContent = query ? (matches + menuCards.filter(card => !card.classList.contains('search-hidden')).length + ' matching menu item(s) for “' + menuSearch.value.trim() + '”. Clear the search to browse everything.') : 'Browse all menu items below.';
+      if (!query) {
+        searchStatus.textContent = 'Eight collections · Search any item or jump to a category.';
+      } else if (matches > 0) {
+        searchStatus.textContent = matches + ' matching result(s) for “' + menuSearch.value.trim() + '”.';
+      } else {
+        searchStatus.textContent = 'No matches for “' + menuSearch.value.trim() + '”. Try “latte”, “matcha”, “sandwich” or “canelé”.';
+      }
+
+      if (shouldScroll && query) {
+        const target = firstMatch || searchStatus;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return matches;
+    }
+
+    menuSearch.addEventListener('input', () => runMenuSearch(false));
+    menuSearch.addEventListener('keydown', event => {
+      if (event.key === 'Enter') { event.preventDefault(); runMenuSearch(true); }
+      if (event.key === 'Escape') {
+        menuSearch.value = '';
+        runMenuSearch(false);
+        menuSearch.focus();
+      }
     });
-    menuSearch.addEventListener('keydown', event => { if (event.key === 'Escape') { menuSearch.value = ''; menuSearch.dispatchEvent(new Event('input')); } });
     const revealItems = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(entries => entries.forEach(entry => {
